@@ -172,4 +172,39 @@ window.detailBulan = (bulan, items) => {
     .map(
       (item) => `
     <label class="flex items-center gap-2 border-b pb-2">
-      <
+      <input type="checkbox" value="${item.id}" class="checkbox-item" />
+      <span>${item.nama_barang} (${item.stok})</span>
+    </label>`
+    )
+    .join("");
+
+  modal.classList.remove("hidden");
+};
+
+window.closeModal = () => {
+  document.getElementById("modal-detail").classList.add("hidden");
+};
+
+window.simpanPilihan = async () => {
+  const checked = Array.from(
+    document.querySelectorAll(".checkbox-item:checked")
+  ).map((el) => el.value);
+
+  const payload = checked.map((id) => ({
+    bulan: selectedBulan,
+    catatan_id: id,
+  }));
+
+  if (payload.length === 0) {
+    alert("Pilih minimal satu barang.");
+    return;
+  }
+
+  const { error } = await supabase.from("pilihan_bulan").insert(payload);
+  if (error) {
+    alert("Gagal menyimpan data.");
+  } else {
+    alert("Berhasil disimpan!");
+    closeModal();
+  }
+};
