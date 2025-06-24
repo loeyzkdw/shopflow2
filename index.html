@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Catatan Belanja</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- https://img.freepik.com/free-photo/top-view-open-notepad-with-feijoas-flowers_140725-133175.jpg -->
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+        background-image: url("https://cnc-magazine.oramiland.com/parenting/images/catatan-aesthetic.width-800.format-webp.webp");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        min-height: 100vh;
+        color: #333;
+      }
+      .fade-in {
+        animation: fadeIn 0.8s ease-in-out;
+      }
+      .slide-up {
+        animation: slideUp 0.6s ease-out;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes slideUp {
+        from {
+          transform: translateY(24px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+      .grid-calendar {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+        gap: 1.5rem;
+        background-size: cover;
+        background-position: center;
+        background-blend-mode: overlay;
+        background-color: rgba(255, 255, 255, 0.7);
+        padding: 1.5rem;
+        border-radius: 1.5rem;
+        box-shadow: inset 0 0 20px rgba(255, 192, 203, 0.2);
+        backdrop-filter: blur(6px);
+      }
+    </style>
+  </head>
+  <body
+    class="min-h-screen fade-in"
+  >
+    <div class="container mx-auto p-6">
+      <h1
+        class="text-4xl font-extrabold mb-8 text-center text-white drop-shadow-sm slide-up"
+      >
+        📆 Catatan Belanja
+      </h1>
+
+      <!-- FORM TAMBAH BARANG -->
+      <div
+        class="bg-white/70 backdrop-blur-md p-8 rounded-3xl shadow-xl mb-10 max-w-2xl mx-auto ring-1 ring-pink-100 slide-up"
+      >
+        <h2
+          class="text-2xl font-semibold mb-6 text-sky-700 flex items-center gap-2"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6 text-pink-400 animate-bounce"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M5 13l4 4L19 7"
+            />
+          </svg>
+          Tambah Barang Baru
+        </h2>
+        <form id="form-barang" class="space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="flex flex-col">
+              <label
+                for="nama_barang"
+                class="mb-2 font-medium text-sm text-sky-700"
+                >Nama Barang</label
+              >
+              <input
+                type="text"
+                id="nama_barang"
+                placeholder="Contoh: Sabun Mandi"
+                class="w-full p-3 border border-pink-200 rounded-lg focus:ring-2 focus:ring-pink-300 focus:outline-none transition duration-300 hover:shadow-md"
+                required
+              />
+            </div>
+            <div class="flex flex-col">
+              <label
+                for="type_belanja"
+                class="mb-2 font-medium text-sm text-sky-700"
+                >Tipe Belanja</label
+              >
+              <select
+                id="type_belanja"
+                class="w-full p-3 border border-pink-200 rounded-lg focus:ring-2 focus:ring-pink-300 focus:outline-none transition duration-300 hover:shadow-md"
+                required
+              >
+                <option value="bulanan">Bulanan</option>
+                <option value="mingguan">Mingguan</option>
+              </select>
+            </div>
+            <div class="flex flex-col">
+              <label for="stok" class="mb-2 font-medium text-sm text-sky-700"
+                >Stok</label
+              >
+              <input
+                type="number"
+                id="stok"
+                placeholder="0"
+                class="w-full p-3 border border-pink-200 rounded-lg focus:ring-2 focus:ring-pink-300 focus:outline-none transition duration-300 hover:shadow-md"
+                required
+              />
+            </div>
+            <div class="flex flex-col">
+              <label for="harga" class="mb-2 font-medium text-sm text-sky-700"
+                >Harga Satuan</label
+              >
+              <input
+                type="number"
+                id="harga"
+                placeholder="0"
+                class="w-full p-3 border border-pink-200 rounded-lg focus:ring-2 focus:ring-pink-300 focus:outline-none transition duration-300 hover:shadow-md"
+                required
+              />
+            </div>
+          </div>
+          <div
+            class="mb-6 bg-pink-50 border border-pink-200 p-4 rounded-lg flex items-center justify-between transition-all duration-300 hover:scale-105"
+          >
+            <span class="font-semibold text-sky-700">Total Harga:</span>
+            <span id="total_harga" class="font-bold text-pink-600">Rp 0</span>
+          </div>
+          <button
+            type="submit"
+            class="group w-full bg-gradient-to-r from-sky-500 to-pink-500 hover:from-pink-500 hover:to-sky-500 text-white font-bold py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-400"
+          >
+            <span class="group-hover:scale-105 transition-transform"
+              >💾 Simpan Barang</span
+            >
+          </button>
+        </form>
+      </div>
+
+      <!-- NOTIFIKASI -->
+      <div id="notif-area" class="text-center mb-8 slide-up"></div>
+
+      <!-- KALENDER BULAN -->
+      <div id="hasil-belanja" class="grid-calendar slide-up"></div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+  </body>
+</html>
