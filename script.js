@@ -2,10 +2,10 @@ import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 
 const supabase = createClient(
   "https://qwkswxihcrdbdxukakzb.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF3a3N3eGloY3JkYmR4dWtha3piIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA3Mzk2NjgsImV4cCI6MjA2NjMxNTY2OH0.L5RuokONvLC1cpIW9_fow7wANWfZyQF5M4c1AcRc1xU"
+  "YOUR_SUPABASE_ANON_KEY"
 );
-const TABLE = "catatan_penjualan";
 
+const TABLE = "catatan_penjualan";
 const form = document.getElementById("form-barang");
 const namaBarang = document.getElementById("nama_barang");
 const typeBelanja = document.getElementById("type_belanja");
@@ -21,9 +21,11 @@ const rupiah = (n) =>
     currency: "IDR",
     minimumFractionDigits: 0,
   }).format(n);
+
 const calcTotal = () => {
   totalEl.textContent = rupiah((+stokEl.value || 0) * (+hargaEl.value || 0));
 };
+
 stokEl.addEventListener("input", calcTotal);
 hargaEl.addEventListener("input", calcTotal);
 
@@ -62,25 +64,6 @@ window.editItem = async (item) => {
   load();
 };
 
-// Accordion toggle eksklusif
-window.toggleAccordion = (id) => {
-  document
-    .querySelectorAll('[id^="konten-"]')
-    .forEach((el) => el.classList.add("hidden"));
-  document
-    .querySelectorAll('[id^="icon-"]')
-    .forEach((icon) => icon.classList.remove("rotate-180"));
-
-  const el = document.getElementById(`konten-${id}`);
-  const icon = document.getElementById(`icon-${id}`);
-
-  const isOpen = !el.classList.contains("hidden");
-  if (!isOpen) {
-    el.classList.remove("hidden");
-    icon.classList.add("rotate-180");
-  }
-};
-
 const groupByBulan = (data) =>
   data.reduce((acc, i) => {
     const d = new Date(i.tanggal);
@@ -93,8 +76,7 @@ const render = (data) => {
   hasilEl.innerHTML = "";
   notifEl.innerHTML = "";
   if (!data.length) {
-    notifEl.innerHTML =
-      '<div class="text-gray-500">Belum ada data belanja.</div>';
+    notifEl.innerHTML = '<div class="text-gray-500">Belum ada data belanja.</div>';
     return;
   }
 
@@ -104,14 +86,7 @@ const render = (data) => {
     year: "numeric",
   });
 
-  if (
-    !data.some((i) => {
-      const d = new Date(i.tanggal);
-      return (
-        d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear()
-      );
-    })
-  ) {
+  if (!data.some((i) => new Date(i.tanggal).getMonth() === now.getMonth())) {
     notifEl.innerHTML = `<div class="bg-red-100 text-red-800 p-4 rounded-lg shadow">💡 Anda belum belanja di bulan ${bulanKey}.</div>`;
   }
 
@@ -121,25 +96,18 @@ const render = (data) => {
       const cards = items
         .map(
           (it) => `
-      <div class="bg-white/80 p-4 rounded-xl shadow transition hover:shadow-lg">
-        <h4 class="font-semibold text-sky-700">${it.nama_barang}</h4>
-        <p class="text-sm text-gray-500">${it.stok} × ${rupiah(it.harga)}</p>
-        <p class="text-sm mb-2"><span class="font-semibold">Tipe:</span> ${
-          it.type_belanja
-        }</p>
-        <div class="flex justify-between items-center">
-          <span class="text-pink-600 font-bold">${rupiah(it.total)}</span>
-          <div class="flex gap-2">
-            <button onclick='editItem(${JSON.stringify(it).replace(
-              /"/g,
-              "&quot;"
-            )})' class="text-yellow-500 hover:text-yellow-600">✏️</button>
-            <button onclick='hapusItem(${
-              it.id
-            })' class="text-red-500 hover:text-red-600">🗑️</button>
+        <div class="bg-white/80 p-4 rounded-xl shadow">
+          <h4 class="font-semibold text-sky-700">${it.nama_barang}</h4>
+          <p class="text-sm text-gray-500">${it.stok} × ${rupiah(it.harga)}</p>
+          <p class="text-sm mb-2"><span class="font-semibold">Tipe:</span> ${it.type_belanja}</p>
+          <div class="flex justify-between items-center">
+            <span class="text-pink-600 font-bold">${rupiah(it.total)}</span>
+            <div class="flex gap-2">
+              <button onclick='editItem(${JSON.stringify(it).replace(/"/g, "&quot;")})' class="text-yellow-500 hover:text-yellow-600">✏️</button>
+              <button onclick='hapusItem(${it.id})' class="text-red-500 hover:text-red-600">🗑️</button>
+            </div>
           </div>
-        </div>
-      </div>`
+        </div>`
         )
         .join("");
 
@@ -147,31 +115,24 @@ const render = (data) => {
 
       return `
       <div class="bg-white border border-sky-100 rounded-2xl shadow-md p-5 space-y-4">
-<h3 class="text-xl font-bold text-sky-600 flex justify-between items-center">
-  <span>${bulan}</span>
-  <button onclick='hapusBulan("${bulan}", ${JSON.stringify(items).replace(
-        /"/g,
-        "&quot;"
-      )})' class="text-red-400 hover:text-red-600 text-sm">
-    🗑️
-  </button>
-</h3>
+        <h3 class="text-xl font-bold text-sky-600 flex justify-between items-center">
+          <span>${bulan}</span>
+          <div class="space-x-2">
+            <button onclick='detailBulan("${bulan}", ${JSON.stringify(items).replace(/"/g, "&quot;")})' class="text-blue-500 hover:text-blue-700 text-sm">🔍 Detail</button>
+            <button onclick='hapusBulan("${bulan}", ${JSON.stringify(items).replace(/"/g, "&quot;")})' class="text-red-400 hover:text-red-600 text-sm">🗑️</button>
+          </div>
+        </h3>
         <div class="max-h-[270px] overflow-y-auto space-y-3 pr-2">
           ${cards}
         </div>
-        <div class="text-right text-sm text-sky-700 font-semibold pt-2 border-t">Total : ${rupiah(
-          totalBulan
-        )} </div>
+        <div class="text-right text-sm text-sky-700 font-semibold pt-2 border-t">Total : ${rupiah(totalBulan)}</div>
       </div>`;
     })
     .join("");
 };
 
 async function load() {
-  const { data } = await supabase
-    .from(TABLE)
-    .select("*")
-    .order("tanggal", { ascending: false });
+  const { data } = await supabase.from(TABLE).select("*").order("tanggal", { ascending: false });
   render(data || []);
 }
 load();
@@ -193,3 +154,22 @@ form.addEventListener("submit", async (e) => {
   totalEl.textContent = "Rp 0";
   load();
 });
+
+// --- FUNGSI MODAL DETAIL BULAN ---
+let selectedBulan = "";
+let selectedItems = [];
+
+window.detailBulan = (bulan, items) => {
+  selectedBulan = bulan;
+  selectedItems = items;
+
+  const modal = document.getElementById("modal-detail");
+  const list = document.getElementById("modal-list");
+  const judul = document.getElementById("modal-judul");
+
+  judul.textContent = `Pilih Barang - ${bulan}`;
+  list.innerHTML = items
+    .map(
+      (item) => `
+    <label class="flex items-center gap-2 border-b pb-2">
+      <
