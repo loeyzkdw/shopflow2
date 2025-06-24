@@ -1,11 +1,11 @@
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
-const supabase = createClient(
-  "https://qwkswxihcrdbdxukakzb.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF3a3N3eGloY3JkYmR4dWtha3piIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA3Mzk2NjgsImV4cCI6MjA2NjMxNTY2OH0.L5RuokONvLC1cpIW9_fow7wANWfZyQF5M4c1AcRc1xU"
+const supabase = createClient( 
+  "https://qwkswxihcrdbdxukakzb.supabase.co", 
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF3a3N3eGloY3JkYmR4dWtha3piIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA3Mzk2NjgsImV4cCI6MjA2NjMxNTY2OH0.L5RuokONvLC1cpIW9_fow7wANWfZyQF5M4c1AcRc1xU" 
 );
-
 const TABLE = "catatan_penjualan";
+
 const form = document.getElementById("form-barang");
 const namaBarang = document.getElementById("nama_barang");
 const typeBelanja = document.getElementById("type_belanja");
@@ -75,6 +75,7 @@ const groupByBulan = (data) =>
 const render = (data) => {
   hasilEl.innerHTML = "";
   notifEl.innerHTML = "";
+
   if (!data.length) {
     notifEl.innerHTML = '<div class="text-gray-500">Belum ada data belanja.</div>';
     return;
@@ -155,11 +156,11 @@ form.addEventListener("submit", async (e) => {
   load();
 });
 
-// --- FUNGSI MODAL DETAIL BULAN ---
+// === MODAL DETAIL BULAN ===
 let selectedBulan = "";
 let selectedItems = [];
 
-window.detailBulan = (bulan, items) => {
+window.detailBulan = async (bulan, items) => {
   selectedBulan = bulan;
   selectedItems = items;
 
@@ -167,18 +168,29 @@ window.detailBulan = (bulan, items) => {
   const list = document.getElementById("modal-list");
   const judul = document.getElementById("modal-judul");
 
-  judul.textContent = `Pilih Barang - ${bulan}`;
+  judul.innerHTML = `🧾 <span class="animate-bounce inline-block">Pilih Barang - ${bulan}</span>`;
+
+  const { data: existing } = await supabase
+    .from("pilihan_bulan")
+    .select("catatan_id")
+    .eq("bulan", bulan);
+
+  const selectedIds = existing.map((e) => e.catatan_id);
+
   list.innerHTML = items
     .map(
       (item) => `
     <label class="flex items-center gap-2 border-b pb-2">
-      <input type="checkbox" value="${item.id}" class="checkbox-item" />
+      <input type="checkbox" value="${item.id}" class="checkbox-item" ${
+        selectedIds.includes(item.id) ? "checked" : ""
+      } />
       <span>${item.nama_barang} (${item.stok})</span>
     </label>`
     )
     .join("");
 
   modal.classList.remove("hidden");
+  modal.classList.add("flex");
 };
 
 window.closeModal = () => {
@@ -186,25 +198,25 @@ window.closeModal = () => {
 };
 
 window.simpanPilihan = async () => {
-  const checked = Array.from(
-    document.querySelectorAll(".checkbox-item:checked")
-  ).map((el) => el.value);
+  const checked = Array.from(document.querySelectorAll(".checkbox-item:checked")).map(
+    (el) => el.value
+  );
+
+  if (checked.length === 0) return alert("Pilih minimal satu barang.");
+
+  // Hapus pilihan lama dulu agar tidak duplikat
+  await supabase.from("pilihan_bulan").delete().eq("bulan", selectedBulan);
 
   const payload = checked.map((id) => ({
     bulan: selectedBulan,
     catatan_id: id,
   }));
 
-  if (payload.length === 0) {
-    alert("Pilih minimal satu barang.");
-    return;
-  }
-
   const { error } = await supabase.from("pilihan_bulan").insert(payload);
   if (error) {
-    alert("Gagal menyimpan data.");
+    alert("❌ Gagal menyimpan data.");
   } else {
-    alert("Berhasil disimpan!");
+    alert("✅ Pilihan berhasil disimpan.");
     closeModal();
   }
 };
