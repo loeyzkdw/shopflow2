@@ -11,7 +11,6 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
       rel="stylesheet"
     />
-    <!-- https://img.freepik.com/free-photo/top-view-open-notepad-with-feijoas-flowers_140725-133175.jpg -->
     <style>
       body {
         font-family: "Poppins", sans-serif;
@@ -51,9 +50,6 @@
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
         gap: 1.5rem;
-        background-size: cover;
-        background-position: center;
-        background-blend-mode: overlay;
         background-color: rgba(255, 255, 255, 0.7);
         padding: 1.5rem;
         border-radius: 1.5rem;
@@ -62,117 +58,64 @@
       }
     </style>
   </head>
-  <body
-    class="min-h-screen fade-in"
-  >
+  <body class="min-h-screen fade-in">
     <div class="container mx-auto p-6">
-      <h1
-        class="text-4xl font-extrabold mb-8 text-center text-white drop-shadow-sm slide-up"
-      >
+      <h1 class="text-4xl font-extrabold mb-8 text-center text-white drop-shadow-sm slide-up">
         📆 Catatan Belanja
       </h1>
 
       <!-- FORM TAMBAH BARANG -->
-      <div
-        class="bg-white/70 backdrop-blur-md p-8 rounded-3xl shadow-xl mb-10 max-w-2xl mx-auto ring-1 ring-pink-100 slide-up"
-      >
-        <h2
-          class="text-2xl font-semibold mb-6 text-sky-700 flex items-center gap-2"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-6 w-6 text-pink-400 animate-bounce"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="1.5"
-              d="M5 13l4 4L19 7"
-            />
+      <div class="bg-white/70 backdrop-blur-md p-8 rounded-3xl shadow-xl mb-10 max-w-2xl mx-auto ring-1 ring-pink-100 slide-up">
+        <h2 class="text-2xl font-semibold mb-6 text-sky-700 flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-pink-400 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7"/>
           </svg>
           Tambah Barang Baru
         </h2>
         <form id="form-barang" class="space-y-4">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="flex flex-col">
-              <label
-                for="nama_barang"
-                class="mb-2 font-medium text-sm text-sky-700"
-                >Nama Barang</label
-              >
-              <input
-                type="text"
-                id="nama_barang"
-                placeholder="Contoh: Sabun Mandi"
-                class="w-full p-3 border border-pink-200 rounded-lg focus:ring-2 focus:ring-pink-300 focus:outline-none transition duration-300 hover:shadow-md"
-                required
-              />
+              <label for="nama_barang" class="mb-2 font-medium text-sm text-sky-700">Nama Barang</label>
+              <input type="text" id="nama_barang" placeholder="Contoh: Sabun Mandi" class="w-full p-3 border border-pink-200 rounded-lg" required />
             </div>
             <div class="flex flex-col">
-              <label
-                for="type_belanja"
-                class="mb-2 font-medium text-sm text-sky-700"
-                >Tipe Belanja</label
-              >
-              <select
-                id="type_belanja"
-                class="w-full p-3 border border-pink-200 rounded-lg focus:ring-2 focus:ring-pink-300 focus:outline-none transition duration-300 hover:shadow-md"
-                required
-              >
+              <label for="type_belanja" class="mb-2 font-medium text-sm text-sky-700">Tipe Belanja</label>
+              <select id="type_belanja" class="w-full p-3 border border-pink-200 rounded-lg" required>
                 <option value="bulanan">Bulanan</option>
                 <option value="mingguan">Mingguan</option>
               </select>
             </div>
             <div class="flex flex-col">
-              <label for="stok" class="mb-2 font-medium text-sm text-sky-700"
-                >Stok</label
-              >
-              <input
-                type="number"
-                id="stok"
-                placeholder="0"
-                class="w-full p-3 border border-pink-200 rounded-lg focus:ring-2 focus:ring-pink-300 focus:outline-none transition duration-300 hover:shadow-md"
-                required
-              />
+              <label for="stok" class="mb-2 font-medium text-sm text-sky-700">Stok</label>
+              <input type="number" id="stok" placeholder="0" class="w-full p-3 border border-pink-200 rounded-lg" required />
             </div>
             <div class="flex flex-col">
-              <label for="harga" class="mb-2 font-medium text-sm text-sky-700"
-                >Harga Satuan</label
-              >
-              <input
-                type="number"
-                id="harga"
-                placeholder="0"
-                class="w-full p-3 border border-pink-200 rounded-lg focus:ring-2 focus:ring-pink-300 focus:outline-none transition duration-300 hover:shadow-md"
-                required
-              />
+              <label for="harga" class="mb-2 font-medium text-sm text-sky-700">Harga Satuan</label>
+              <input type="number" id="harga" placeholder="0" class="w-full p-3 border border-pink-200 rounded-lg" required />
             </div>
           </div>
-          <div
-            class="mb-6 bg-pink-50 border border-pink-200 p-4 rounded-lg flex items-center justify-between transition-all duration-300 hover:scale-105"
-          >
+          <div class="mb-6 bg-pink-50 border border-pink-200 p-4 rounded-lg flex items-center justify-between">
             <span class="font-semibold text-sky-700">Total Harga:</span>
             <span id="total_harga" class="font-bold text-pink-600">Rp 0</span>
           </div>
-          <button
-            type="submit"
-            class="group w-full bg-gradient-to-r from-sky-500 to-pink-500 hover:from-pink-500 hover:to-sky-500 text-white font-bold py-3 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-400"
-          >
-            <span class="group-hover:scale-105 transition-transform"
-              >💾 Simpan Barang</span
-            >
-          </button>
+          <button type="submit" class="w-full bg-gradient-to-r from-sky-500 to-pink-500 text-white font-bold py-3 rounded-lg hover:opacity-90">💾 Simpan Barang</button>
         </form>
       </div>
 
-      <!-- NOTIFIKASI -->
       <div id="notif-area" class="text-center mb-8 slide-up"></div>
-
-      <!-- KALENDER BULAN -->
       <div id="hasil-belanja" class="grid-calendar slide-up"></div>
+    </div>
+
+    <!-- MODAL DETAIL BULAN -->
+    <div id="modal-detail" class="fixed inset-0 z-50 bg-black/30 backdrop-blur-sm hidden justify-center items-center">
+      <div class="bg-white p-6 rounded-xl shadow-xl w-full max-w-xl space-y-4">
+        <h3 id="modal-judul" class="text-xl font-bold text-sky-700">Detail Bulan</h3>
+        <div id="modal-list" class="max-h-72 overflow-y-auto space-y-3 text-sm"></div>
+        <div class="flex justify-end gap-3">
+          <button onclick="closeModal()" class="text-sm text-gray-500">❌ Tutup</button>
+          <button onclick="simpanPilihan()" class="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-lg">💾 Simpan Pilihan</button>
+        </div>
+      </div>
     </div>
 
     <script type="module" src="script.js"></script>
