@@ -2,7 +2,7 @@ import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 
 const supabase = createClient(
   "https://qwkswxihcrdbdxukakzb.supabase.co",
-  "YOUR_SUPABASE_ANON_KEY"
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF3a3N3eGloY3JkYmR4dWtha3piIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA3Mzk2NjgsImV4cCI6MjA2NjMxNTY2OH0.L5RuokONvLC1cpIW9_fow7wANWfZyQF5M4c1AcRc1xU"
 );
 
 const TABLE = "catatan_penjualan";
