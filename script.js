@@ -1,8 +1,8 @@
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
 const supabase = createClient(
-  "https://feriqnmbfzixgeedmvzw.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZlcmlxbm1iZnppeGdlZWRtdnp3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA2ODY3NTAsImV4cCI6MjA2NjI2Mjc1MH0.POc4TH7fATyb1lsWmMPmUZUww4vaH_5qgGCsD3MsW-E"
+  "https://qwkswxihcrdbdxukakzb.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF3a3N3eGloY3JkYmR4dWtha3piIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA3Mzk2NjgsImV4cCI6MjA2NjMxNTY2OH0.L5RuokONvLC1cpIW9_fow7wANWfZyQF5M4c1AcRc1xU"
 );
 const TABLE = "catatan_penjualan";
 
